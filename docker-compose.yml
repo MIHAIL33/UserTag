@@ -3,7 +3,7 @@ version : '2'
 services:
   
   postgres:
-      container_name: postgres
+      container_name: postgre
       image: 'bitnami/postgresql:latest'
       environment:
         - POSTGRESQL_USERNAME=${POSTGRESQL_USERNAME}
@@ -11,6 +11,9 @@ services:
         - POSTGRESQL_DATABASE=${POSTGRESQL_DATABASE}
       ports:
         - ${PG_PORT}:5432
+      networks:
+        - default
+      
   pgadmin:
     image: dpage/pgadmin4:4.18
     restart: always
@@ -34,8 +37,10 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - secret=${secret}
+    depends_on:
+      - postgres
     networks:
-      - default      
+      - default     
 
 networks:
   default:
